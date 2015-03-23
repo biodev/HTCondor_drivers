@@ -25,5 +25,5 @@ val my_job = new UnifiedGenotyper
 my_job.jobOutputFile="my_job.out"
 my_job.jobErrorFile="my_job.err"
 ...
-add(my_obj)
+add(my_job)
 ```
