@@ -72,7 +72,8 @@ class CondorJobRunner(session: Session, function: CommandLineFunction) extends D
     //as there is something haywire with the drmaa output will add stdout and err here
     nativeSpec += "output=%s\n".format(function.jobOutputFile.getPath)
 
-    nativeSpec += "log=%s\n".format(function.jobOutputFile.getPath.replace(".out", ".condor_log"))
+    //Doesn't seem to work for some reason...
+    //nativeSpec += "Log=%s\n".format(function.jobOutputFile.getPath.replace(".out", ".condor"))
 
     if (function.jobErrorFile != null) {
       nativeSpec += "error=%s\n".format(function.jobErrorFile.getPath)
@@ -82,9 +83,12 @@ class CondorJobRunner(session: Session, function: CommandLineFunction) extends D
     }
 
     //wallTime here is actually the expected time of the job so that it is less likely to get booted due to greediness
-    //we assume that it is specified in minutes, so will convert to seconds
-    if (function.wallTime != null){
+    //we assume that it is specified in minutes, so will convert to seconds.
+    //An hour is used by default
+    if (function.wallTime.isDefined){
       nativeSpec += "+MaxExecutionTime=%d\n".format(function.wallTime.map(_ * 60).get.ceil.toInt)
+    }else{
+      nativeSpec += "+MaxExecutionTime=%d\n".format(3600)
     }
 
     logger.debug("Native spec is: %s".format(nativeSpec))
