@@ -27,3 +27,7 @@ my_job.jobErrorFile="my_job.err"
 ...
 add(my_job)
 ```
+
+Note that `wallTime` is now mapped to MaxExecutionTime (on exacloud).  Time is to be specified in minutes.
+
+Your `LD_LIBRARY_PATH` may need to be adjusted.  For instance on exacloud you may need to add: `/opt/condor/lib/:/opt/condor/lib/condor/`
